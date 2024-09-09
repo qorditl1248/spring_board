@@ -36,6 +36,7 @@
 --    provider VARCHAR(255) NOT NULL
 --);
 
+-- 게시판 테이블
 --CREATE TABLE BOARD (
 --    id BIGINT AUTO_INCREMENT PRIMARY KEY,
 --    user_id BIGINT not null,
@@ -48,8 +49,17 @@
 
 --alter table `USER` add column `email` varchar(255) not null;
 
-create table board_like(
+--create table board_like(
+--    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+--    board_id BIGINT not null,
+--    user_id BIGINT not null
+--);
+
+create table COMMENT (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    board_id BIGINT not null,
-    user_id BIGINT not null
+    board_id BIGINT NOT NULL,
+    parent_id BIGINT NOT NULL DEFAULT 0,
+    content TEXT NOT NULl,
+    writer_id BIGINT NOT NULL,
+    create_date DATETIME NOT NULL
 );

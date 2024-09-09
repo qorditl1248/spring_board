@@ -137,6 +137,12 @@ function DetailPage(props) {
               __html: board.data.data.content
             }}></div>
           </div>
+          <div>
+            <div css={s.commentWriteBox}>
+              <textarea name="" placeholder='댓글을 입력하세요'></textarea>
+              <button>작성하기</button>
+            </div>
+          </div>
         </>
       }
     </div>

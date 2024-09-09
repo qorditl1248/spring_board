@@ -113,6 +113,10 @@ function WritePage() {
           editor.setSelection(editPoint.index + 1); // 삽입한 다음 위치로 커서 이동 
           editor.insertText(editPoint.index + 1, "\n"); // 처음에 설정한 위치에 있기 때문에 
           setUploading(false);
+          setBoard(board => ({
+            ...board,
+            content: editor.root.innerHTML
+          }));
         }
       );
     }

@@ -83,3 +83,28 @@ export const contentBox = css`
     width: 100%;
   }
 `;
+
+export const commentWriteBox = css`
+  box-sizing: border-box;
+  display: flex;
+  margin-top: 5px;
+  border: 1px solid #dbdbdb;
+  width: 100%;
+  height: 80px;
+
+  & > textarea {
+    flex-grow: 1;
+    margin-right: 5px;
+    outline: none;
+    resize: none;
+    padding: 12px 15px;
+  }
+
+  & > button {
+    box-sizing: border-box;
+    border: 1px solid #dbdbdb;
+    width: 80px;
+    background-color: #ffffff;
+    cursor: pointer;
+  }
+`;
