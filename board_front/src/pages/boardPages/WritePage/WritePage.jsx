@@ -8,15 +8,18 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../../../firebase/firebase';
 import { v4 as uuid} from 'uuid';
 import { RingLoader } from 'react-spinners';
-import { boardApi } from '../../../apis/boardApi';
+import { useNavigate } from 'react-router-dom';
+import { instance } from '../../../apis/util/instance';
 
- // 해당 모듈 라이브러리를 추가하겠다 (imageResize 라이브러리 추가)
+// 해당 모듈 라이브러리를 추가하겠다 (imageResize 라이브러리 추가)
 Quill.register("modules/imageResize", ImageResize);
 
 
 // 글쓰기 페이지
 function WritePage() {
   
+  const navigate = useNavigate();
+
   // 글 작성 내용 
   const [ board, setBoard ] = useState({
     title: "",
@@ -31,17 +34,32 @@ function WritePage() {
 
   // 작성하기 버튼 
   const handleWriteSubmitOnClick = async() => {
-    const boardData = await boardApi(board);
     
-    if(!boardData.isSuccess) {
-      alert(boardData.fieldErrors);
+    if(board.title.trim() === "" && board.content.trim() === "") {
+      alert("제목과 내용 둘다 빈값일 수 없습니다.");
       return;
     }
-    alert("작성 완료!");
-    setBoard({
-      title: "",
-      content: ""
-    });
+    
+    try {
+      const response = await instance.post("/board", board);
+      alert("작성이 완료되었습니다.");
+      navigate(`/board/detail/${response.data.boardId}`);
+    } catch(error) {
+      const fieldErrors = error.response.data;
+      
+      for (let fieldError of fieldErrors) {
+        if (fieldError.field === "title") {
+          alert(fieldError.defaultMessage);
+          return;
+        }
+      }
+      for (let fieldError of fieldErrors) {
+        if (fieldError.field === "content") {
+          alert(fieldError.defaultMessage);
+          return;
+        }
+      }
+    }
   }
 
 
@@ -138,7 +156,6 @@ function WritePage() {
             height: "100%"
           }}
           onChange={handleQuillValueOnChange}
-          value={board.content}
           modules={{
             toolbar: {
               container: toolbarOptions,

@@ -6,6 +6,7 @@ import com.study.SpringSecurityMybatis.security.handler.OAuth2SuccessHandler;
 import com.study.SpringSecurityMybatis.service.OAuth2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -48,6 +49,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/auth/**", "/h2-console/**")
+                .permitAll()
+                .antMatchers(
+                        HttpMethod.GET,
+                        "/board/**"
+                )
                 .permitAll()
                 .anyRequest()
                 .authenticated();

@@ -19,7 +19,10 @@ function IndexPage(props) {
   // 로그아웃 버튼 클릭 시, 홈페이지로 이동 
   const handleLogoutButtonOnClick = () => {
     localStorage.removeItem("accessToken"); // 로컬스토리지안에 있는 accessToken 지우기 
-    window.location.replace("/");
+    if(window.confirm("로그아웃하시겠습니까? ")) {
+      window.location.replace("/");
+    }
+    return;
   };
 
 
@@ -45,8 +48,8 @@ function IndexPage(props) {
       <main css={s.main}>
         <div css={s.leftBox}>
           <Link to={"/board"}>게시글</Link>
-          {/* <Link to={"/board/write"}>글쓰기</Link> */}
-          <Link to={"/test"}>input 테스트</Link>
+          <Link to={"/board/write"}>글쓰기</Link>
+          {/* <Link to={"/test"}>input 테스트</Link> */}
         </div>
         { // 성공상태가 아니면 바로 회원가입화면으로, 성공상태가 맞다면 error가 아닌지 확인 
           accessTokenValidState.status !== "success"
