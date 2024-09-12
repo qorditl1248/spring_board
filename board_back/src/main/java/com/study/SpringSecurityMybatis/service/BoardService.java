@@ -1,10 +1,13 @@
 package com.study.SpringSecurityMybatis.service;
 
+import com.study.SpringSecurityMybatis.dto.request.ReqBoardListDto;
 import com.study.SpringSecurityMybatis.dto.request.ReqWriteBoardDto;
 import com.study.SpringSecurityMybatis.dto.response.RespBoardDetailDto;
 import com.study.SpringSecurityMybatis.dto.response.RespBoardLikeInfoDto;
+import com.study.SpringSecurityMybatis.dto.response.RespBoardListDto;
 import com.study.SpringSecurityMybatis.entity.Board;
 import com.study.SpringSecurityMybatis.entity.BoardLike;
+import com.study.SpringSecurityMybatis.entity.BoardList;
 import com.study.SpringSecurityMybatis.exception.NotFoundBoardException;
 import com.study.SpringSecurityMybatis.repository.BoardLikeMapper;
 import com.study.SpringSecurityMybatis.repository.BoardMapper;
@@ -13,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class BoardService {
@@ -24,8 +29,6 @@ public class BoardService {
     private BoardLikeMapper boardLikeMapper;
 
     public Long writeBoard(ReqWriteBoardDto dto) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal();
 
         PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder
                 .getContext()
@@ -101,6 +104,18 @@ public class BoardService {
     // 좋아요 삭제
     public void dislike(Long boardLikeId) {
         boardLikeMapper.deleteById(boardLikeId);
+    }
+
+    // board 리스트 뽑아오기
+    public RespBoardListDto getBoardList(ReqBoardListDto dto) {
+        Long startIndex = (dto.getPage() - 1) * dto.getLimit(); // 이 공식은 불변
+        List<BoardList> boardLists = boardMapper.findAllByStartIndexAndLimit(startIndex, dto.getLimit());
+        Integer boardTotalCount = boardMapper.getCountAll();
+
+        return RespBoardListDto.builder()
+                .boards(boardLists)
+                .totalCount(boardTotalCount)
+                .build();
     }
 
 }

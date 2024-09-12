@@ -2,7 +2,8 @@
 ----DROP TABLE IF EXISTS ROLE;
 ----DROP TABLE IF EXISTS USER_ROLES;
 ----drop table if exists  OAUTH2_USER;
---
+--drop table if exists  board_like;
+
 --CREATE TABLE USER (
 --    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 --    username VARCHAR(255) UNIQUE not null,
@@ -39,27 +40,34 @@
 -- 게시판 테이블
 --CREATE TABLE BOARD (
 --    id BIGINT AUTO_INCREMENT PRIMARY KEY,
---    user_id BIGINT not null,
---    title VARCHAR(255)  NOT NULL,
---    content LONGTEXT NOT NULL
+--    title VARCHAR(255) NOT NULL,
+--    content LONGTEXT NOT NULL,
+--    user_id BIGINT NOT NULL,
+--    view_count INT NOT NULL DEFAULT 0
 --);
+
 
 --alter table board add column view_count int not null default 0;
 
 
 --alter table `USER` add column `email` varchar(255) not null;
 
---create table board_like(
+--CREATE TABLE board_like(
 --    id BIGINT AUTO_INCREMENT PRIMARY KEY,
 --    board_id BIGINT not null,
 --    user_id BIGINT not null
 --);
 
-create table COMMENT (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    board_id BIGINT NOT NULL,
-    parent_id BIGINT NOT NULL DEFAULT 0,
-    content TEXT NOT NULl,
-    writer_id BIGINT NOT NULL,
-    create_date DATETIME NOT NULL
-);
+--create table COMMENT (
+--    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+--    board_id BIGINT NOT NULL,
+--    parent_id BIGINT NULL,
+--    content TEXT NOT NULl,
+--    writer_id BIGINT NOT NULL,
+--    create_date DATETIME NOT NULL
+--);
+
+--CREATE TRIGGER before_delete_comment
+--BEFORE DELETE ON comment
+--FOR EACH ROW
+--    DELETE FROM comment WHERE parent_id = OLD.id;

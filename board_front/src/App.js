@@ -11,6 +11,7 @@ import OAuth2JoinPage from './pages/OAuth2JoinPage/OAuth2JoinPage';
 import OAuth2LoginPage from './pages/OAuth2LoginPage/OAuth2LoginPage';
 import WritePage from './pages/boardPages/WritePage/WritePage';
 import DetailPage from './pages/boardPages/DetailPage/DetailPage';
+import NumberBoardListPage from './pages/boardPages/NumberBoardListPage/NumberBoardListPage';
 
 
 function App() {
@@ -110,17 +111,16 @@ function App() {
                 {/* 프로필 */}
                 <Route path='/profile' element={ <UserProfilePage/> } />
 
+                {/* 게시판 목록 페이지 -> 무한스크롤, 페이지네이션 */}
+                <Route path='/board/number' element={<NumberBoardListPage/>} />
+                <Route path='/board/scroll' element={<></>} />
 
-                {/* 게시판 목록 페이지*/}
-                <Route path='/board' element={<></>} />
                 {/* boardId라는 키값으로 바뀌어서 들어감 */}
                 <Route path="/board/detail/:boardId" element={ <DetailPage/> }/>
                 {/* 게시판 글쓰기 */}
                 <Route path='/board/write' element={<WritePage/>} />
                 
                 
-                
-
 
                 {/* <Route path='/test' element={<TestPage/>} /> */}
                 <Route path='/admin/*' element={ <></> } />

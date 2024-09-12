@@ -18,4 +18,8 @@ public class Comment {
     private String content;
     private Long writerId;
     private LocalDateTime createDate;
+    private int level;
+
+    private String username;
+    private String img;
 }

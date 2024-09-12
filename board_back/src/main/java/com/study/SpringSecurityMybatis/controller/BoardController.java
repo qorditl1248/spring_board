@@ -1,8 +1,10 @@
 package com.study.SpringSecurityMybatis.controller;
 
 import com.study.SpringSecurityMybatis.aspect.annotation.ValidAop;
+import com.study.SpringSecurityMybatis.dto.request.ReqBoardListDto;
 import com.study.SpringSecurityMybatis.dto.request.ReqWriteBoardDto;
 import com.study.SpringSecurityMybatis.service.BoardService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Map;
 
+@Slf4j
 @RestController
 public class BoardController {
 
@@ -25,10 +28,16 @@ public class BoardController {
         return ResponseEntity.ok().body(Map.of("boardId", boardService.writeBoard(dto)));
     }
 
-    // 게시판 리스트 불러오기
+    // 게시판 불러오기
     @GetMapping("/board/{boardId}")
     public ResponseEntity<?> getDetail(@PathVariable Long boardId) {
         return ResponseEntity.ok().body(boardService.getBoardDetail(boardId));
+    }
+
+    @GetMapping("/board/list")
+    public ResponseEntity<?> getBoards(ReqBoardListDto dto) {
+        System.out.println(dto);
+        return ResponseEntity.ok().body(boardService.getBoardList(dto));
     }
 
     @GetMapping("/board/{boardId}/like")

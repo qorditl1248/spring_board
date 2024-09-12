@@ -5,16 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@Builder
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
 @AllArgsConstructor
-public class Board {
+@Data
+@Builder
+public class BoardList {
     private Long id;
     private String title;
-    private String content;
-    private Long userId;
-    private int viewCount;
-
-    private User user;
+    private String writerName;
+    private Integer likeCount;
+    private Integer viewCount;
 }

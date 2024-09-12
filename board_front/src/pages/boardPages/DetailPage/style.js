@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 
 export const layout = css`
   box-sizing: border-box;
-  margin: 50px auto 0px;
+  margin: 50px auto 300px;
   width: 1100px;
 `;
 
@@ -17,7 +17,6 @@ export const header = css`
     font-size: 38px;
     cursor: default;
   }
-
 `;
 
 export const titleAndLike = css`
@@ -39,7 +38,6 @@ export const titleAndLike = css`
       font-size: 30px;
     }
   }
-
 `;
 
 export const boardInfoContainer = css`
@@ -84,20 +82,24 @@ export const contentBox = css`
   }
 `;
 
-export const commentWriteBox = css`
+export const commentContainer = css`
+  margin-bottom: 50px;
+`;
+
+export const commentWriteBox = (level) => css`
   box-sizing: border-box;
   display: flex;
   margin-top: 5px;
-  border: 1px solid #dbdbdb;
-  width: 100%;
+  margin-left: ${level * 3}%;
   height: 80px;
 
   & > textarea {
     flex-grow: 1;
+    border: 1px solid #dbdbdb;
     margin-right: 5px;
+    padding: 12px 15px;
     outline: none;
     resize: none;
-    padding: 12px 15px;
   }
 
   & > button {
@@ -107,4 +109,74 @@ export const commentWriteBox = css`
     background-color: #ffffff;
     cursor: pointer;
   }
+`;
+
+export const commentListContainer = (level) => css` // level 몇번째 자식인지 체크해서 마진이 들어가게 
+  box-sizing: border-box;                           // 부모는 0 
+  display: flex;
+  align-items: center;
+  margin-left: ${level * 3}%;
+  border-bottom: 1px solid #dbdbdb;
+  padding: 12px 15px;
+
+  & > div:nth-of-type(1) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 12px;
+    border: 1px solid #dbdbdb;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    overflow:  hidden;
+    & > img {
+      height: 100%;
+    }
+  }
+`;
+
+export const commentDetail = css`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+`;
+
+export const detailHeader = css`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+
+  & > span:nth-of-type(1) {
+    font-weight: 600;
+    cursor: default;
+  }
+`;
+
+export const detailContent = css`
+  margin-bottom: 10px;
+  max-height: 50px;
+  overflow-y: auto;
+`;
+
+export const detailButtons = css`
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+
+  & button {
+    box-sizing: border-box;
+    margin-left: 4px;
+    padding: 5px 10px;
+    border: 1px solid #dbdbdb;
+    background-color: white;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #fafafa;
+    }
+
+    &:active {
+      background-color: #f9f9f9;
+    }
+}
 `;
