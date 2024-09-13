@@ -47,9 +47,11 @@ function IndexPage(props) {
 
       <main css={s.main}>
         <div css={s.leftBox}>
-          <Link to={"/board"}>게시글</Link>
+          
+          <Link to={"/board/number?page=1"}>게시글 번호</Link>
+          <Link to={"/board/scroll"}>게시글 스크롤</Link>
           <Link to={"/board/write"}>글쓰기</Link>
-          {/* <Link to={"/test"}>input 테스트</Link> */}
+          
         </div>
         { // 성공상태가 아니면 바로 회원가입화면으로, 성공상태가 맞다면 error가 아닌지 확인 
           accessTokenValidState.status !== "success"

@@ -36,7 +36,6 @@ public class BoardController {
 
     @GetMapping("/board/list")
     public ResponseEntity<?> getBoards(ReqBoardListDto dto) {
-        System.out.println(dto);
         return ResponseEntity.ok().body(boardService.getBoardList(dto));
     }
 

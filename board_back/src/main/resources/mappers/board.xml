@@ -49,7 +49,6 @@
     </select>
 
     <select id="findAllByStartIndexAndLimit" resultType="com.study.SpringSecurityMybatis.entity.BoardList">
-
         with like_count as (
             select
                 board_id,
@@ -58,22 +57,23 @@
                 board_like
             group by
                 board_id
-        )
+            )
 
-        select
-            b.id,
-            b.title,
-            u.username as writerName,
-            ifnull(lc.like_cnt, 0) as likeCount,
-            b.view_count as viewCount
-        from
-            board b
-            left outer join user u on(u.id = b.user_id)
-            left outer join like_count lc on(lc.board_id = b.id)
-        order by
-            b.id desc
-        limit #{startIndex}, #{limit}
-<!-- limit 0, 3 인덱스가 0부터 3개, 3, 3이면 3번인덱스 부터 3개 들고오는거  -->
+            select
+                b.id,
+                b.title,
+                b.content,
+                u.img as writerProfileImg,
+                u.username as writerName,
+                ifnull(lc.like_cnt, 0) as likeCount,
+                b.view_count as viewCount
+            from
+                board b
+                left outer join user u on(u.id = b.user_id)
+                left outer join like_count lc on(lc.board_id = b.id)
+            order by
+                b.id desc
+            limit #{startIndex}, #{limit}
     </select>
 
     <select id="getCountAll" resultType="java.lang.Integer">
@@ -82,5 +82,4 @@
         from
             board
     </select>
-
 </mapper>

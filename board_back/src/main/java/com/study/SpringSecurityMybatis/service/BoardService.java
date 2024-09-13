@@ -108,7 +108,7 @@ public class BoardService {
 
     // board 리스트 뽑아오기
     public RespBoardListDto getBoardList(ReqBoardListDto dto) {
-        Long startIndex = (dto.getPage() - 1) * dto.getLimit(); // 이 공식은 불변
+        Long startIndex = (dto.getPage() - 1) * dto.getLimit();  // (해당 페이지번호 - 1) * (limit 수 - 10으로 정해둠)
         List<BoardList> boardLists = boardMapper.findAllByStartIndexAndLimit(startIndex, dto.getLimit());
         Integer boardTotalCount = boardMapper.getCountAll();
 
