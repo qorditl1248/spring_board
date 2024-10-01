@@ -31,6 +31,10 @@ export const leftBox = css`
   border: 2px solid #dbdbdb;
   border-radius: 10px;
   width: 64%;
+
+  & a {
+    margin-right: 10px;
+  }
 `;
 
 export const rightBox = css`

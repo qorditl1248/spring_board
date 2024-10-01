@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface BoardMapper {
@@ -18,4 +19,13 @@ public interface BoardMapper {
             @Param("limit") Long limit);
 
     int getCountAll();
+
+    int getCountAllBySearch(Map<String, Object> params);
+
+    // 게시물 검색 기능
+    List<BoardList> findAllBySearch(Map<String, Object> params);
+
+    int deleteById(Long id);
+
+    int updateText(Board board);
 }

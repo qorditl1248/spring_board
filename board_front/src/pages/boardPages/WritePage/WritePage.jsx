@@ -8,29 +8,45 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../../../firebase/firebase';
 import { v4 as uuid} from 'uuid';
 import { RingLoader } from 'react-spinners';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { instance } from '../../../apis/util/instance';
+import { useMutation, useQuery } from 'react-query';
 
 // 해당 모듈 라이브러리를 추가하겠다 (imageResize 라이브러리 추가)
 Quill.register("modules/imageResize", ImageResize);
 
 
 // 글쓰기 페이지
-function WritePage() {
+function WritePage({modifyBoard, editMode, setEditMode}) {
+
   
   const navigate = useNavigate();
+  const params = useParams();
+  const boardId = params.boardId; // URL의 동적 파라미터를 가져오는 훅
 
   // 글 작성 내용 
   const [ board, setBoard ] = useState({
-    title: "",
-    content: ""
+    title: modifyBoard?.data?.data.title,
+    content: modifyBoard?.data?.data.content
   });
+
 
   // 업로드 상태 
   const [ isUploading, setUploading ] = useState(false);
   
   const quillRef = useRef(null);
 
+
+  const boardList = useQuery( 
+    ["boardQuery", boardId], // boardId가 바뀔때마다 동작
+    async() => {
+      return instance.get(`/board/${boardId}`);
+    }, 
+    {
+      refetchOnWindowFocus: false,
+      retry: 0,
+    }
+  ); 
 
   // 작성하기 버튼 
   const handleWriteSubmitOnClick = async() => {
@@ -60,6 +76,23 @@ function WritePage() {
         }
       }
     }
+  }
+  
+  const modfiyTextMutation = useMutation(
+    async () => {
+      return await instance.put(`/board/text/${boardId}`, board);
+    },
+    {
+      onSuccess: response => {
+        alert("수정이 완료되었습니다!");
+        boardList.refetch();
+      }
+    }
+  )
+
+  const handleModifyTextOnClick = () => {
+    setEditMode(true);
+    modfiyTextMutation.mutateAsync();
   }
 
 
@@ -134,11 +167,18 @@ function WritePage() {
     ['blockquote', 'code-block'],                                        
   ], []);
 
+
+  
+
   return (
     <div css={s.layout}>
       <header css={s.header}>
-        <h1>Quill Edit</h1>
-        <button onClick={handleWriteSubmitOnClick}>작성하기</button>
+        <Link to={"/"}><h1>Quill Edit</h1></Link>
+        {
+          editMode
+          ? <button onClick={handleModifyTextOnClick}>수정하기</button>
+          : <button onClick={handleWriteSubmitOnClick}>작성하기</button>
+        }
       </header>
         <input css={s.titleInput} type='text' 
           onChange={handleTitleInputOnChange} value={board.title} placeholder='게시글의 제목을 입력하세요'
@@ -159,6 +199,7 @@ function WritePage() {
             width: "100%",
             height: "100%"
           }}
+          value={board.content || ""}
           onChange={handleQuillValueOnChange}
           modules={{
             toolbar: {

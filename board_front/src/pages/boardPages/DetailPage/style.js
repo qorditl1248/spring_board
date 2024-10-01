@@ -180,3 +180,48 @@ export const detailButtons = css`
     }
 }
 `;
+
+export const modal = css`
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  padding: 20px;
+  width: 400px;
+  height: 300px;
+  border-top: 30px solid #dbffca;
+  box-shadow: 0px 5px 5px #dbdbdb;
+  background-color: #fdfaf4;
+  background: linear-gradient(to bottom, transparent 30px, #00ff802e 5px) 0 0 /
+      100vw 20px repeat-y,
+    linear-gradient(to right, transparent 30px, #00ff802e 5px) 0 0 / 20px 100vh
+      repeat-x white;
+`;
+
+export const modfiy = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h2 {
+    font-weight: 400;
+    margin-top: 0;
+  }
+
+  input {
+    padding: 20px;
+    width: 250px;
+    height: 100px;
+    background-color: transparent;
+    border: 1px solid #dbdbdb;
+    outline: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+`;
+

@@ -6,6 +6,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { instance } from '../../../apis/util/instance';
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import { IoLogoReddit } from "react-icons/io5";
+import WritePage from '../WritePage/WritePage';
 
 // 각 작성글 보기 (user)
 function DetailPage(props) {
@@ -29,6 +30,8 @@ function DetailPage(props) {
     commentId: 0, 
     content: "" 
   })
+
+  const [editMode, setEditMode] = useState(true); // 게시물이 수정되지않는 상태가 true 기본값
 
 
   //  get 요청일때 -> useQuery 사용 (데이터를 자동으로 들고오거나, 수시로 가져올때 사용)
@@ -141,7 +144,7 @@ function DetailPage(props) {
       }
     }
   )
-  
+
   // 좋아요 하트 클릭 
   const handleLikeOnClick = () => {
     if(!userInfoData?.data) {
@@ -235,7 +238,37 @@ function DetailPage(props) {
     }
   }
 
+  // 본문 삭제 요청
+  const deleteTextMutation = useMutation(
+    async (boardId) => {
+      return await instance.delete(`/board/text/${boardId}`);
+    },
+    {
+      onSuccess: response => {
+        alert("본문이 정상적으로 삭제되었습니다.");
+        board.refetch();
+        navigate("/");
+      }
+    }
+  )
+  
+  // 본문 삭제 버튼 클릭
+  const handleDeleteTextOnClick = (boardId) => {
+    if(window.confirm("정말 삭제하시겠습니까?")) {
+      deleteTextMutation.mutateAsync(boardId); 
+      return;
+    }
+  }
+
+  const handleModifyTextOnClick = () => {
+    setEditMode(false);
+  }
+
   return (
+    <>
+    {
+      editMode
+      ?
     <div css={s.layout}>
       <Link to={"/"}><h1><IoLogoReddit/></h1></Link>
       {
@@ -280,8 +313,8 @@ function DetailPage(props) {
                 {
                   board.data.data.writerId === userInfoData?.data.userId && 
                   <>
-                    <button>수정</button>
-                    <button>삭제</button>
+                    <button onClick={handleModifyTextOnClick}>수정</button>
+                    <button onClick={() => handleDeleteTextOnClick(boardId)}>삭제</button>
                   </>
                 }
               </div>
@@ -360,7 +393,6 @@ function DetailPage(props) {
                     </div>
                   }
                   
-
                 </div>
                 )
               }
@@ -369,7 +401,11 @@ function DetailPage(props) {
         </>
       }
     </div>
+    : <WritePage modifyBoard={board} editMode={true} setEditMode={setEditMode}/>
+    }
+  </>
   )
 }
 
 export default DetailPage;
+

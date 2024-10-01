@@ -13,6 +13,12 @@ import WritePage from './pages/boardPages/WritePage/WritePage';
 import DetailPage from './pages/boardPages/DetailPage/DetailPage';
 import NumberBoardListPage from './pages/boardPages/NumberBoardListPage/NumberBoardListPage';
 import ScrollBoardListPage from './pages/boardPages/ScrollBoardListPage/ScrollBoardListPage';
+import SearchboardPage from './pages/boardPages/SearchBoardPage/SearchBoardPage';
+import MailPage from './pages/MailPage/MailPage';
+import TestPage from './pages/TestPage';
+import TestPage2 from './pages/TestPage2';
+import Starbucks from './pages/Starbucks';
+import Starbucks2 from './pages/Starbucks2';
 
 
 function App() {
@@ -112,10 +118,20 @@ function App() {
                 {/* 프로필 */}
                 <Route path='/profile' element={ <UserProfilePage/> } />
 
+                {/* 검색 기능 */}
+                <Route path='/board/search' element={<SearchboardPage/>} />
+
                 {/* 게시판 목록 페이지 -> 무한스크롤, 페이지네이션 */}
                 <Route path='/board/number' element={<NumberBoardListPage/>} />
                 <Route path='/board/scroll' element={<ScrollBoardListPage/>} />
 
+                <Route path='/mail' element={<MailPage/>}/>
+
+                <Route path='/test' element={<TestPage/>}/>
+                <Route path='/test2' element={<TestPage2/>}/>
+                <Route path='/test3' element={<Starbucks/>}/>
+                <Route path='/test4' element={<Starbucks2/>}/>
+                
 
 
                 {/* boardId라는 키값으로 바뀌어서 들어감 */}

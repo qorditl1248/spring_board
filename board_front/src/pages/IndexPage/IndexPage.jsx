@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 /** @jsxImportSource @emotion/react */
 import { Link, useNavigate } from 'react-router-dom';
 /** @jsxImportSource @emotion/react */
@@ -37,12 +37,28 @@ function IndexPage(props) {
   
   const userInfoState = queryClient.getQueryState("userInfoQuery");
 
+  const [ searchValue, setSearchValue ] = useState("");
+
+
+  
+  const handleSearchInputOnChange = (e) => {
+    setSearchValue(e.target.value);
+  } 
+
+  const handleSearchInputOnKeyDown = (e) => {
+    if(e.keyCode === 13) { 
+      navigate(`/board/search?page=1&option=all&search=${searchValue}`);
+    }
+  }
+
   
   return (
     <div css={s.layout}>
       
       <header css={s.header}>
-        <input type='search' placeholder='검색어를 입력해 주세요'/>
+        <input type='search' placeholder='검색어를 입력해 주세요' 
+          onChange={handleSearchInputOnChange} 
+          onKeyDown={handleSearchInputOnKeyDown}/>
       </header>
 
       <main css={s.main}>
@@ -50,7 +66,9 @@ function IndexPage(props) {
           
           <Link to={"/board/number?page=1"}>게시글 번호</Link>
           <Link to={"/board/scroll"}>게시글 스크롤</Link>
+          <Link to={"/board/search?page=1"}>게시글 검색</Link>
           <Link to={"/board/write"}>글쓰기</Link>
+          <Link to={"/mail"}>메일전송</Link>
           
         </div>
         { // 성공상태가 아니면 바로 회원가입화면으로, 성공상태가 맞다면 error가 아닌지 확인 

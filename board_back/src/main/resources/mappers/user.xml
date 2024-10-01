@@ -17,6 +17,7 @@
         <result property="password" column="password"/>
         <result property="name" column="name"/>
         <result property="email" column="email"/>
+        <result property="emailValid" column="email_valid"/>
         <result property="img" column="img"/>
         <collection property="oAuth2Users" javaType="java.util.Set" resultMap="oAuth2UserResultMap"/>
         <collection property="userRoles" javaType="java.util.Set" resultMap="userRolesResultMap"/>
@@ -50,6 +51,14 @@
             id = #{id}
     </update>
 
+    <update id="modifyEmailValidByUserName">
+        update user
+        set
+            email_valid = 1
+        where
+            username = #{username}
+    </update>
+
 
     <select id="findByUsername" resultMap="userResultMap">
         select
@@ -58,6 +67,7 @@
             u.password,
             u.name,
             u.email,
+            u.email_valid,
             u.img,
             ou.id as oauth2_user_id,
             ou.user_id as ou_user_id,
@@ -105,7 +115,7 @@
 
     <insert id="save" parameterType="com.study.SpringSecurityMybatis.entity.User" useGeneratedKeys="true" keyProperty="id">
         insert into user
-        values(default, #{username}, #{password}, #{name}, #{email}, default)
+        values(default, #{username}, #{password}, #{name}, #{email}, default, #{emailValid})
     </insert>
 
     <!--  select 결과가 resultMap 형태로 리턴이 될 것이다 여기서는 즉, userResultMap 형태로 리턴    -->
@@ -117,6 +127,7 @@
             u.name,
             u.email,
             u.img,
+            u.email_valid,
             ou.id as oauth2_user_id,
             ou.user_id as ou_user_id,
             ou.oauth2_name,

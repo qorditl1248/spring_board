@@ -50,7 +50,7 @@
 --alter table board add column view_count int not null default 0;
 
 
---alter table `USER` add column `email` varchar(255) not null;
+-- alter table `USER` add column `email_valid` int not null default 0;
 
 --CREATE TABLE board_like(
 --    id BIGINT AUTO_INCREMENT PRIMARY KEY,

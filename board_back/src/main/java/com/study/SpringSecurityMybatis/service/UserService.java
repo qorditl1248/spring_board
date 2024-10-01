@@ -9,6 +9,7 @@ import com.study.SpringSecurityMybatis.entity.OAuth2User;
 import com.study.SpringSecurityMybatis.entity.Role;
 import com.study.SpringSecurityMybatis.entity.User;
 import com.study.SpringSecurityMybatis.entity.UserRoles;
+import com.study.SpringSecurityMybatis.exception.EmailValidExcepiton;
 import com.study.SpringSecurityMybatis.exception.SignupException;
 import com.study.SpringSecurityMybatis.repository.RoleMapper;
 import com.study.SpringSecurityMybatis.repository.UserMapper;
@@ -82,7 +83,7 @@ public class UserService {
         }
 
         return RespSignupDto.builder()
-                .message("회원가입 완료")
+                .message("가입하신 이메일 주소를 통해 인증 후 사용할 수 있습니다.")
                 .user(user)
                 .build();
     }
@@ -92,6 +93,10 @@ public class UserService {
         // 요청온 dto의 username과 password를 검사하고 user 객체에 담음
         // 이 user를 가지고 토큰 생성
         User user = checkUsernameAndPassword(dto.getUsername(), dto.getPassword());
+
+        if(user.getEmailValid() !=1 ) {
+            throw new EmailValidExcepiton(user.getEmail());
+        }
 
         return RespSigninDto.builder()
                 .message("로그인 성공")

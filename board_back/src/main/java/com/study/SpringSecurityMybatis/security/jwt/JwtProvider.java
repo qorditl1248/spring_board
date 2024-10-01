@@ -38,6 +38,16 @@ public class JwtProvider {
                 .compact();
     }
 
+    // 이메일 인증 토큰
+    public String generateEmailValidToken(String username) {
+        Date expireDate = new Date(new Date().getTime() + (1000l * 60 * 5));
+        return Jwts.builder()
+                .claim("username", username)
+                .expiration(expireDate) // 만료일자
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
     // 토큰 앞에 bearer 자르기
     public String removeBearer(String bearerToken) throws RuntimeException {
         if(bearerToken == null) {

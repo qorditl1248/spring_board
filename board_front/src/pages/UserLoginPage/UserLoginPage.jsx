@@ -71,6 +71,17 @@ function UserLoginPage(props) {
         setFieldErrorMessages(EmptyfieldErrors); // 로그인에러 상태에 EmptyfieldErrors 객체 넣어줌 
         alert(signinData.error);  
       }
+      if(signinData.errorStatus === 'validEmail') {
+        if(window.confirm(`${signinData.error}\n인증메일을 재전송 하시겠습니까?`)) {
+          const response = await instance.post("/auth/mail", {
+            toEmail: signinData.error.email,
+            username: inputUser.username 
+          });
+          if(response.status === 200) {
+            alert("인증메일을 전송하였습니다.");
+          }
+        }
+      }
       return;
     }
     

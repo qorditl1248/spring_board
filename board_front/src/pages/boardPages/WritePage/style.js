@@ -9,7 +9,7 @@ export const layout = css`
 export const header = css`
   display: flex;
   justify-content: space-between;
-  /* align-items: flex-end; */
+  align-items: flex-end;
   margin: 10px 0;
 
   & > h1 {
@@ -20,7 +20,8 @@ export const header = css`
     box-sizing: border-box;
     border: 1px solid #c0c0c0;
     background-color: white;
-    padding: 6px 15px;
+    padding: 10px 15px;
+    height: 40px;
     font-size: 12px;
     color: #333333;
     font-weight: 600;

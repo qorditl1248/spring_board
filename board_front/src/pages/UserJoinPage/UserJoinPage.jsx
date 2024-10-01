@@ -3,6 +3,8 @@ import * as s from './style';
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { signupApi } from '../../apis/signupApi';
+import { useMutation } from 'react-query';
+import { instance } from '../../apis/util/instance';
 /** @jsxImportSource @emotion/react */
 
 
@@ -30,6 +32,13 @@ function UserJoinPage(props) {
     email: <></>
   });
 
+  const sendMail = useMutation(
+    async ({toEmail, username}) => {
+      return await instance.post("/auth/mail", {toEmail, username}); 
+    }
+  )
+
+
   // 입력받은 user 정보들 set
   const handleInputUserOnchange = (e) => {
     setInputUser(inputUser => ({
@@ -47,9 +56,18 @@ function UserJoinPage(props) {
       showFieldErrorMessage(signupData.fieldErrors);
       return;
     };
+    
+    const toEmail = signupData.ok.user.email;
+    const username = signupData.ok.user.username;
+
+    console.log(toEmail);
+    console.log(username);
+
+    await sendMail.mutateAsync({toEmail, username}); // mutation -> 두개 이상 보낼때는 객체형태로 보내줌
 
     // 회원가입 성공(isSucess가 true) 했을 때 로그인 페이지로 이동 
     alert(`${signupData.ok.message}`);
+
     navigate("/user/login"); 
   };
 

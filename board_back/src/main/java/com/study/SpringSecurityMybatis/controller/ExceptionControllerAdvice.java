@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.security.sasl.AuthenticationException;
+import java.util.Map;
 
 // controller안에서 터지는 예외들 여기서 잡아채감
 
@@ -40,6 +41,14 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<?> AccessDeniedException(AccessDeniedException e) {
         return ResponseEntity.status(403).body(e.getMessage()); // 접근 권한 없는거
+    }
+
+    @ExceptionHandler(EmailValidExcepiton.class)
+    public ResponseEntity<?> emailValidException(EmailValidExcepiton e) {
+        return ResponseEntity.status(403).body(Map.of(
+                "message", e.getMessage(),
+                "email", e.getEmail()
+        )); // 접근 권한 없는거
     }
 
 

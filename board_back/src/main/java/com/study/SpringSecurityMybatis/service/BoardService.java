@@ -1,6 +1,8 @@
 package com.study.SpringSecurityMybatis.service;
 
 import com.study.SpringSecurityMybatis.dto.request.ReqBoardListDto;
+import com.study.SpringSecurityMybatis.dto.request.ReqSearchDto;
+import com.study.SpringSecurityMybatis.dto.request.ReqUpdateBoardDto;
 import com.study.SpringSecurityMybatis.dto.request.ReqWriteBoardDto;
 import com.study.SpringSecurityMybatis.dto.response.RespBoardDetailDto;
 import com.study.SpringSecurityMybatis.dto.response.RespBoardLikeInfoDto;
@@ -18,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BoardService {
@@ -106,6 +109,10 @@ public class BoardService {
         boardLikeMapper.deleteById(boardLikeId);
     }
 
+    public void deleteText(Long boardId) {
+        boardMapper.deleteById(boardId);
+    }
+
     // board 리스트 뽑아오기
     public RespBoardListDto getBoardList(ReqBoardListDto dto) {
         Long startIndex = (dto.getPage() - 1) * dto.getLimit();  // (해당 페이지번호 - 1) * (limit 수 - 10으로 정해둠)
@@ -117,5 +124,30 @@ public class BoardService {
                 .totalCount(boardTotalCount)
                 .build();
     }
+
+    public RespBoardListDto getSearchBoard(ReqSearchDto dto) {
+        Long startIndex = (dto.getPage() - 1) * dto.getLimit();
+        // map을 통해 객체 key,value를 만들어서 Mapper에 보냄
+        Map<String, Object> params = Map.of(
+                "startIndex", startIndex,
+                "limit", dto.getLimit(),
+                "searchValue", dto.getSearch() == null ? "" : dto.getSearch(),
+                "option", dto.getOption() == null ? "all" : dto.getOption()
+        );
+
+        List<BoardList> boardLists = boardMapper.findAllBySearch(params);
+        Integer boardTotalCount = boardMapper.getCountAllBySearch(params);
+
+        return RespBoardListDto.builder()
+                .boards(boardLists)
+                .totalCount(boardTotalCount)
+                .build();
+    }
+
+    public void updateText(ReqUpdateBoardDto dto, Long boardId) {
+        dto.setId(boardId);
+        boardMapper.updateText(dto.toEntity());
+    }
+
 
 }
